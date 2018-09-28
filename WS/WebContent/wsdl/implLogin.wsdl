@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://wsHomologador" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://wsHomologador" xmlns:intf="http://wsHomologador" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://wsHomologador" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="validaLogin">
+    <complexType>
+     <sequence>
+      <element name="obj" type="impl:BeanLogin"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="BeanLogin">
+    <sequence>
+     <element name="mensaje" nillable="true" type="xsd:string"/>
+     <element name="password" nillable="true" type="xsd:string"/>
+     <element name="status" type="xsd:boolean"/>
+     <element name="usuario" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="validaLoginResponse">
+    <complexType>
+     <sequence>
+      <element name="validaLoginReturn" type="impl:BeanLogin"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="validaLoginRequest">
+
+      <wsdl:part element="impl:validaLogin" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="validaLoginResponse">
+
+      <wsdl:part element="impl:validaLoginResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="implLogin">
+
+      <wsdl:operation name="validaLogin">
+
+         <wsdl:input message="impl:validaLoginRequest" name="validaLoginRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:validaLoginResponse" name="validaLoginResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="implLoginSoapBinding" type="impl:implLogin">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="validaLogin">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="validaLoginRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="validaLoginResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="implLoginService">
+
+      <wsdl:port binding="impl:implLoginSoapBinding" name="implLogin">
+
+         <wsdlsoap:address location="http://localhost:8080/WS/services/implLogin"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>
