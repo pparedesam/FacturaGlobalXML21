@@ -14,7 +14,7 @@ import javax.activation.DataSource;
 import org.apache.soap.util.mime.ByteArrayDataSource;
 
 
-
+// alex gandara
 // CLASE PARA EMITIR DOCUMENTOS GRAVADOS 
 //                   DOCUMENTOS EXONERADOR
 
