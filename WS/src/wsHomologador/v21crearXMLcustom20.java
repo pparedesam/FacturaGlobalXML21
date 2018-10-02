@@ -1017,7 +1017,7 @@ public class v21crearXMLcustom20 {
 		System.out.println("");
 
 
-		double _descuento_global=myCabecera.get_tot_desc();
+		double _descuento_global=myCabecera.get_desc_glo();
 		double _descuento_detalle=myCabecera.get_desc_detalle();
 		double _descuentos=_descuento_global+_descuento_detalle;
 
@@ -2308,6 +2308,10 @@ public class v21crearXMLcustom20 {
 		Atr_LineExtensionAmount.setValue(myCabecera.get_moneda());
 		LineExtensionAmount_tot.setAttributeNode(Atr_LineExtensionAmount);
 
+		
+		
+		
+		
 		// cbc:TaxInclusiveAmount
 		Element TaxInclusiveAmount = document.createElement("cbc:TaxInclusiveAmount");
 		TaxInclusiveAmount.appendChild(document.createTextNode(""+Formato._xml(_base+_impuestos)));
@@ -2319,15 +2323,22 @@ public class v21crearXMLcustom20 {
 		
 		
 		
+		
 		// cbc:AllowanceTotalAmount
 		Element AllowanceTotalAmount = document.createElement("cbc:AllowanceTotalAmount");
 		AllowanceTotalAmount.appendChild(document.createTextNode(""+Formato._xml(_descuentos)));
 		LegalMonetaryTotal_Header.appendChild(AllowanceTotalAmount);
 
+		
+		
 		Attr Atr_AllowanceTotalAmount = document.createAttribute("currencyID");	
 		Atr_AllowanceTotalAmount.setValue(myCabecera.get_moneda());
 		AllowanceTotalAmount.setAttributeNode(Atr_AllowanceTotalAmount);
 
+		
+		
+		
+		
 		// cbc:ChargeTotalAmount
 		Element ChargeTotalAmount = document.createElement("cbc:ChargeTotalAmount");
 		ChargeTotalAmount.appendChild(document.createTextNode(""+Formato._xml(0)));
@@ -2403,7 +2414,8 @@ public class v21crearXMLcustom20 {
 
 			// cbc:PriceAmount
 			Element PriceAmount_item_reference = document.createElement("cbc:PriceAmount");
-			PriceAmount_item_reference.appendChild(document.createTextNode(Formato.GranDinero(myDetalle[linea].get_precio_unit()    )));
+		//	PriceAmount_item_reference.appendChild(document.createTextNode(Formato.GranDinero(myDetalle[linea].get_precio_unit()-myDetalle[linea].get_desc_unit()    )));
+			PriceAmount_item_reference.appendChild(document.createTextNode(Formato.GranDinero(myDetalle[linea].get_precio_unit())));
 			AlternativeConditionPrice.appendChild(PriceAmount_item_reference);
 
 
@@ -2435,6 +2447,70 @@ public class v21crearXMLcustom20 {
 
 
 
+			
+			
+			
+			
+			
+			
+			
+			///////////////////////////////////////////////////////
+			// 40 Descuentos por ítem
+			// cac:AllowanceCharge
+
+			if (myDetalle[linea].get_desc_unit()>0) {
+
+				Element AllowanceCharge_Detail = document.createElement("cac:AllowanceCharge");
+				InvoiceLine.appendChild(AllowanceCharge_Detail);
+
+				// cbc:ChargeIndicator
+				Element ChargeIndicator = document.createElement("cbc:ChargeIndicator");
+				ChargeIndicator.appendChild(document.createTextNode("false"));
+				AllowanceCharge_Detail.appendChild(ChargeIndicator);
+
+				// cbc:AllowanceChargeReasonCode
+				Element AllowanceChargeReasonCode_01 = document.createElement("cbc:AllowanceChargeReasonCode");
+				AllowanceChargeReasonCode_01.appendChild(document.createTextNode("00"));
+				AllowanceCharge_Detail.appendChild(AllowanceChargeReasonCode_01);
+
+
+				double _MultiplierFactorNumeric=myDetalle[linea].get_desc_unit()/myDetalle[linea].get_valor_tot();
+
+
+				// cbc:MultiplierFactorNumeric
+				Element MultiplierFactorNumeric_01 = document.createElement("cbc:MultiplierFactorNumeric");
+				MultiplierFactorNumeric_01.appendChild(document.createTextNode(Formato._xml(_MultiplierFactorNumeric)));
+				AllowanceCharge_Detail.appendChild(MultiplierFactorNumeric_01);
+
+				// cbc:Amount 
+				Element Amount_Detail = document.createElement("cbc:Amount");
+				Amount_Detail.appendChild(document.createTextNode(""+myDetalle[linea].get_desc_unit()));
+				AllowanceCharge_Detail.appendChild(Amount_Detail);
+
+				// currencyID
+				Attr Atr_descuento_Detail = document.createAttribute("currencyID");	
+				Atr_descuento_Detail.setValue(myCabecera.get_moneda());
+				Amount_Detail.setAttributeNode(Atr_descuento_Detail);
+
+				// cbc:BaseAmount 
+				Element BaseAmount_Detail = document.createElement("cbc:BaseAmount");
+				BaseAmount_Detail.appendChild(document.createTextNode(""+myDetalle[linea].get_valor_tot()));
+				AllowanceCharge_Detail.appendChild(BaseAmount_Detail);
+
+				// currencyID
+				Attr Atr_Base_descuento_Detail = document.createAttribute("currencyID");	
+				Atr_Base_descuento_Detail.setValue(myCabecera.get_moneda());
+				BaseAmount_Detail.setAttributeNode(Atr_Base_descuento_Detail);
+
+
+
+			}
+
+
+
+			
+			
+			
 
 			//////////////////////
 			// OPERACIONES GRAVADAS
@@ -2923,60 +2999,7 @@ public class v21crearXMLcustom20 {
 
 
 
-			///////////////////////////////////////////////////////
-			// 40 Descuentos por ítem
-			// cac:AllowanceCharge
-
-			if (myDetalle[linea].get_desc_unit()>0) {
-
-				Element AllowanceCharge_Detail = document.createElement("cac:AllowanceCharge");
-				InvoiceLine.appendChild(AllowanceCharge_Detail);
-
-				// cbc:ChargeIndicator
-				Element ChargeIndicator = document.createElement("cbc:ChargeIndicator");
-				ChargeIndicator.appendChild(document.createTextNode("False"));
-				AllowanceCharge_Detail.appendChild(ChargeIndicator);
-
-				// cbc:AllowanceChargeReasonCode
-				Element AllowanceChargeReasonCode_01 = document.createElement("cbc:AllowanceChargeReasonCode");
-				AllowanceChargeReasonCode_01.appendChild(document.createTextNode("00"));
-				AllowanceCharge_Detail.appendChild(AllowanceChargeReasonCode_01);
-
-
-				double _MultiplierFactorNumeric=myDetalle[linea].get_desc_unit()/myDetalle[linea].get_valor_tot();
-
-
-				// cbc:MultiplierFactorNumeric
-				Element MultiplierFactorNumeric_01 = document.createElement("cbc:MultiplierFactorNumeric");
-				MultiplierFactorNumeric_01.appendChild(document.createTextNode(Formato._xml(_MultiplierFactorNumeric)));
-				AllowanceCharge_Detail.appendChild(MultiplierFactorNumeric_01);
-
-				// cbc:Amount 
-				Element Amount_Detail = document.createElement("cbc:Amount");
-				Amount_Detail.appendChild(document.createTextNode(""+myDetalle[linea].get_desc_unit()));
-				AllowanceCharge_Detail.appendChild(Amount_Detail);
-
-				// currencyID
-				Attr Atr_descuento_Detail = document.createAttribute("currencyID");	
-				Atr_descuento_Detail.setValue(myCabecera.get_moneda());
-				Amount_Detail.setAttributeNode(Atr_descuento_Detail);
-
-				// cbc:BaseAmount 
-				Element BaseAmount_Detail = document.createElement("cbc:BaseAmount");
-				BaseAmount_Detail.appendChild(document.createTextNode(""+myDetalle[linea].get_valor_tot()));
-				AllowanceCharge_Detail.appendChild(BaseAmount_Detail);
-
-				// currencyID
-				Attr Atr_Base_descuento_Detail = document.createAttribute("currencyID");	
-				Atr_Base_descuento_Detail.setValue(myCabecera.get_moneda());
-				BaseAmount_Detail.setAttributeNode(Atr_Base_descuento_Detail);
-
-
-
-			}
-
-
-
+	
 
 			// //Invoice/cac:TaxTotal/cbc:TaxAmount
 
