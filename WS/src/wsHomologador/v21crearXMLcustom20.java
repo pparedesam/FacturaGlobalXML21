@@ -1106,15 +1106,8 @@ public class v21crearXMLcustom20 {
 		CustomizationID.appendChild(document.createTextNode("2.0"));
 		element.appendChild(CustomizationID);
 
-		// schemeAgencyName="PE:SUNAT"
-		//	Attr attr_schemeAgencyName_0 = document.createAttribute("schemeAgencyName");
-		//	attr_schemeAgencyName_0.setValue("PE:SUNAT");
-		//	CustomizationID.setAttributeNode(attr_schemeAgencyName_0);
-
-
-		//////////////////////////////////////////////////////////
-		///  aqui ira el tipo de documento
-
+		
+		
 		String _tipo_operacion=myCabecera.get_tipo_op();
 		String _profile = "0101";
 
@@ -1136,10 +1129,25 @@ public class v21crearXMLcustom20 {
 
 		// anticipos
 		if (_tipo_operacion.equals("04")) {
-			_profile="0104";
+			_profile="0102";
 		}
 
 
+		
+		
+		// cbc:ProfileID
+		Element ProfileID = document.createElement("cbc:ProfileID");
+		ProfileID.appendChild(document.createTextNode(_profile));
+		element.appendChild(ProfileID);
+
+		
+		// schemeAgencyName="PE:SUNAT"
+		//	Attr attr_schemeAgencyName_0 = document.createAttribute("schemeAgencyName");
+		//	attr_schemeAgencyName_0.setValue("PE:SUNAT");
+		//	CustomizationID.setAttributeNode(attr_schemeAgencyName_0);
+
+
+	
 		//indicador de tipo de operacion
 
 		// cbc:ProfileID
@@ -1205,6 +1213,9 @@ public class v21crearXMLcustom20 {
 
 
 		
+		//////////////////////////////////////////////////////////
+		///  aqui ira el tipo de documento
+
 
 		
 
@@ -1217,7 +1228,7 @@ public class v21crearXMLcustom20 {
 		InvoiceTypeCode.setAttribute("listAgencyName", "PE:SUNAT");
 		InvoiceTypeCode.setAttribute("listName", "Tipo de Documento");
 		InvoiceTypeCode.setAttribute("listURI", "urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo01");
-		InvoiceTypeCode.setAttribute("listID", _profile);
+		InvoiceTypeCode.setAttribute("listID", "0101");
 		InvoiceTypeCode.setAttribute("name", "Tipo de Operacion");
 		InvoiceTypeCode.setAttribute("listSchemeURI", "urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo51");
 
